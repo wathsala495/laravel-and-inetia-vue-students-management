@@ -10,11 +10,13 @@ class Students extends Model
     use HasFactory;
     protected $fillable=['name','email','class_id','sections_id'];
 
+    protected $with=['class','section'];
+
     public function class()
     {
         return $this->belongsTo(Classes::class,'class_id');
     }
     public function section(){
-        return $this->belongsTo(Sections::class);
+        return $this->belongsTo(Sections::class,'sections_id');
     }
 }
