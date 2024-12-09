@@ -4,6 +4,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import MagnifyingGlass from "@/Components/Icons/MagnifyingGlass.vue";
 import Pagination from "@/Components/Pagination.vue";
 import { Head, Link, router, useForm, usePage } from "@inertiajs/vue3";
+import { ref,computed } from "vue";
 defineProps({
     students:{
         type:Object,
@@ -12,6 +13,23 @@ defineProps({
 })
 
 console.log(usePage().props.students);
+
+const deleteform=useForm({})
+const search=ref(""),pageNumber=ref(1);
+let studentUrl=computed(()=>{
+    let url =new URL(route('students.index'));
+    url.searchParams.append('page',pageNumber.value)
+    if(search.value){
+        url.searchParams.append('search',search.value)
+    }
+})
+
+const deleteStudent=(StudentId)=>{
+    if(confirm("Are you sure you want to delete this student?")){
+        deleteform.delete(route('students.destroy',StudentId))
+    }
+    
+}
 </script>
 
 <template>
@@ -59,7 +77,7 @@ console.log(usePage().props.students);
 
                             <input
                                 type="text"
-                                v-model="searchTerm"
+                                v-model="search"
                                 placeholder="Search students data..."
                                 id="search"
                                 class="block rounded-lg border-0 py-2 pl-10 text-gray-900 ring-1 ring-inset ring-gray-200 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -183,7 +201,7 @@ console.log(usePage().props.students);
                                                         Edit
                                                     </Link>
                                                     <button
-                                                       
+                                                       @click="deleteStudent(student.id)"
                                                     >
                                                         Delete
                                                     </button>

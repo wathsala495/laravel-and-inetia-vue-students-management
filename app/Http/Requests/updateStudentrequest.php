@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Students;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Auth\Guard;
 class updateStudentrequest extends FormRequest
@@ -42,4 +43,5 @@ class updateStudentrequest extends FormRequest
             'sections_id'=>'section'
         ];
     }
+    
 }
